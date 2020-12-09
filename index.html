@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>LHC-Forms</title>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-59GQ6JK');</script>
+    <!-- End Google Tag Manager -->
+
+    <style id="antiClickjack">
+      body{display:none !important;}
+    </style>
+    <script type="text/javascript">
+      if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+      } else {
+        top.location = self.location;
+      }
+    </script>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700"
+          rel="stylesheet" type="text/css">
+    <script>
+      function turnRed() {
+        var stuffDiv = document.getElementById('stuffId');
+        stuffDiv.style.color = "red";
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-59GQ6JK" height="0" width="0" style="display:none;visibility:hidden" title="googletagmanager" sandbox></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!--[if lt IE 9]>
+    <p class=alert><b>Note:</b> It appears you are using an unsupported
+     version of the IE browser. This website will not work properly with
+     IE 8 or below.</p>
+    <![endif]-->
+
+    <!-- page header -->
+    <div id="header">
+      <a href="http://lhncbc.nlm.nih.gov" title="Lister Hill Center" id="logo">
+        <img src="lhncbc.jpg" alt="Lister Hill Center" />
+      </a>
+      <div id="siteNameBox">
+        <span id=siteName>HGVS Expression Validator</span><br>
+        <!-- don't feel it's necessary to use a tagline here, but if needed, uncomment and change.
+        <span id=tagline>TBD</span>
+        -->
+      </div>
+    </div>
+    <!-- end page header -->
+
+    <ul class="nav-links horz-list">
+      <li><a href="/" rel="noopener noreferrer">FHIR Tools</a></li>
+      <li><a href="/lhcforms" rel="noopener noreferrer">LHC-Forms Demo</a></li>
+      <li><a href="https://lhcformbuilder.nlm.nih.gov" target="_blank" rel="noopener noreferrer">Form Builder</a></li>
+      <li><a href="https://clinicaltables.nlm.nih.gov"
+             target="_blank" rel="noopener noreferrer">Clinical Table Search Service</a></li>
+      <li><a id="sdcPageLink" href="/sdc">FHIR SDC SMART App</a></li>
+    </ul>
+
+    <div class="page-content">
+      <h2 style="text-align: center">The HGVS Expression Validator</h2>
+      <div class="summary">
+        This HGVS validator can be used to validate HGVS expressions, and the results may optionally include NCBI's
+        <a href="https://www.ncbi.nlm.nih.gov/variation/notation/">SPDI</a> (Sequence Position Deletion Insertion)
+        if available. The validation may have 3 possible outcomes:
+      </div>
+      <div id="show-more-less">
+        <div class="summary">
+          <ul style="margin: 5pt">
+            <li><b>Valid</b>, if the HGVS expression is valid</li>
+            <li><b>Invalid</b>, if the HGVS expression is invalid</li>
+            <li><b>Unknown</b>, if the validity of the HGVS expression could not be determined, for example, due to system limitations or errors</li>
+          </ul>
+          Behind the scenes, this validator is powered by the LHC FHIR API for HGVS Validation and Lookup,
+          which, in turn, is backed by the NCBI's
+          <a href="https://www.ncbi.nlm.nih.gov/variation/services">Variation Service</a> with
+          the <a href="https://mutalyzer.nl/webservices">Mutalyzer</a> as a fall back when NCBI's
+          Variation service couldn't decide the validity of the given HGVS expression.
+          The NCBI's variation service is used to translate the HGVS expression into SPDI if possible.
+        </div>
+        <div class="summary">
+          There are two ways to use this validator:
+          use the interactive user interface for checking individual HGVS expressions or
+          use the LHC FHIR API for HGVS Validation and Lookup from your applications.
+          The interactive user interface is backed by the
+          <a href="https://clinicaltables.nlm.nih.gov/hgvs.html">service API</a>.
+        </div>
+      </div>
+      <p>
+        <a style="text-decoration: underline; color:navy;"  href="javascript:void(0);"
+           onclick="app.showMoreOrLess(this, 'show-more-less');">Show more...</a>
+      </p>
+
+      <div class="sectionBox">
+        <h3>HGVS Expression Validation</h3>
+
+        <table class="input">
+          <tr>
+            <th class="input-label">HGVS to Validate:</th>
+            <td><input type="text" id="hgvsInput" placeholder = "HGVS Expression" style="width: 100%"/>
+              <span style="font-weight:normal">(e.g., NM_001127897.4:c.3642A>G)</span></td>
+          </tr>
+          <tr>
+            <th class="input-label"></th>
+            <td><input type="checkbox" id="includeSPDI"/><label for="includeSPDI">Include SPDI in results (if available)</label></td>
+          </tr>
+          <tr>
+            <th class="input-label"></th>
+            <td><button id="Validate" onclick="app.validateHGVS(); return true;"
+            ><b>Validate</b></button></td>
+          </tr>
+          <tr id="validationResultBox">
+            <th class="input-label">Validation Result:</th>
+            <td id="validationResult" class="results"></td>
+          </tr>
+          <tr id="spdiResultBox" style="display: none">
+            <th class="input-label">SPDI Result:</th>
+            <td id="spdiResult" class="results"></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="sectionBox">
+        <h3>The LHC FHIR API for HGVS Validation and Lookup</h3>
+        <div class="summary">
+          The <a href="https://clinicaltables.nlm.nih.gov/hgvs.html">LHC FHIR API for HGVS Validation and Lookup</a>
+          supports two FHIR operations for HGVS expressions:
+          the $validate-code operation for HGVS expression validation and
+          the $lookup operation that currently only returns NCBI's
+          <a href="https://www.ncbi.nlm.nih.gov/variation/notation/">SPDI</a> (Sequence Position Deletion Insertion)
+          string if available. For more details, please refer to the API's
+          <a href="https://clinicaltables.nlm.nih.gov/hgvs.html">documentation</a>.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- page footer -->
+    <div id="fine-print">
+      <ul class="horz-list">
+        <li><a title="NLM copyright information"  href="http://www.nlm.nih.gov/copyright.html">Copyright</a></li>
+        <li><a title="NLM privacy policy" href="http://www.nlm.nih.gov/privacy.html">Privacy</a></li>
+        <li><a title="NLM accessibility" href="http://www.nlm.nih.gov/accessibility.html" >Accessibility</a></li>
+        <li><a title="NIH Freedom of Information Act office"  href="http://www.nih.gov/icd/od/foia/index.htm"
+         >Freedom of Information Act</a></li>
+        <li class="last-item"><a title="USA.gov" href="http://www.usa.gov/"><img
+              src="USAgov.gif" alt="USA.gov" id="usagov"></a></li>
+      </ul>
+      <ul class="horz-list">
+        <li><a title="U.S. National Library of Medicine" href="http://www.nlm.nih.gov/"
+         >U.S. National Library of Medicine</a></li>
+        <li><a title="U.S. National Institutes of Health" href="http://www.nih.gov/"
+         >U.S. National Institutes of Health</a></li>
+        <li class="last-item"><a title="U.S. Department of Health and Human Services"  href="http://www.hhs.gov/"
+         >U.S. Department of Health and Human Services</a></li>
+      </ul>
+    </div>
+    <!-- end page footer -->
+  </body>
+</html>
