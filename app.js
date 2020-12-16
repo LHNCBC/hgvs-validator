@@ -12,6 +12,8 @@ var fhirJsonFormat = "application/fhir+json";
  * Show more/less of the description section in the first half of the page.
  * @param triggerEle the "show more/less" link element
  * @param showHideId the element id of the element to show/hide
+ * @param onText the link text to use when the action is to show more. It's optional and defaults to "Show more..."
+ * @param offText the link text to use when the action is to show less. It's optional and defaults to "Show less..."
  */
 export function showMoreOrLess(triggerEle, showHideId, onText, offText) {
   onText = onText || 'Show more...';
@@ -28,7 +30,15 @@ export function showMoreOrLess(triggerEle, showHideId, onText, offText) {
 }
 
 
+/**
+ * This is the action function to be called when the "Validate" button is clicked.
+ * It reads the form inputs and act accordingly.
+ */
 export function validateHGVS() {
+  document.getElementById("errorAlertBox").style.display = 'none';
+  document.getElementById("validationResult").innerText = '';
+  document.getElementById("spdiResult").innerText = '';
+
   var hgvsExpr = (document.getElementById("hgvsInput").value || '').trim();
   var withSPDI = document.getElementById("includeSPDI").checked;
 
@@ -36,8 +46,11 @@ export function validateHGVS() {
     errHandler("Please fill in the HGVS expression and try again.");
     return;
   }
+
+  document.getElementById("validationResult").innerText = 'Processing...';
   callCtss('$validate-code', hgvsExpr);
   if(withSPDI) {
+    document.getElementById("spdiResult").innerText = 'Processing...';
     callCtss('$lookup', hgvsExpr);
   }
   else {
@@ -45,11 +58,12 @@ export function validateHGVS() {
   }
 }
 
+
 /**
- * Make the CTSS call url for the given operation and parameters
- * @param op
- * @param params
- * @return {*}
+ * Make the CTSS service url to use for the given FHIR operation and HGVS expression.
+ * @param op the FHIR operation, must be either "$lookup" or "$validate-code"
+ * @param hgvs the HGVS expression for which the operation is to be performed.
+ * @return the CTSS service URL to use to perform the given operation.
  */
 function makeCtssUrl(op, hgvs) {
   var params = op === '$lookup'?
@@ -61,6 +75,11 @@ function makeCtssUrl(op, hgvs) {
 }
 
 
+/**
+ * Make service call to CTSS for the given operation and HGVS expression.
+ * @param op the FHIR CodeSystem operation to perform, must be either $lookup or $validate-code
+ * @param hgvs the HGVS expression for which the operation is to be performed.
+ */
 function callCtss(op, hgvs) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
@@ -79,6 +98,12 @@ function callCtss(op, hgvs) {
   xhttp.send();
 }
 
+
+/**
+ * Process the validation results and display to the user accordingly.
+ * @param respJson the response json for the FHIR $validate-code request
+ * @param statusCode the http status code for the response.
+ */
 function processValidateResponse(respJson, statusCode) {
   var vldResultEle = document.getElementById("validationResult");
 
@@ -86,7 +111,7 @@ function processValidateResponse(respJson, statusCode) {
     vldResultEle.innerText = respJson.parameter[0].valueBoolean? 'Valid': 'Invalid';
   }
   else if(statusCode < 500) {
-    vldResultEle.innerText = getOpOutcomeMsg(respJson) || 'Unknown error occurred';
+    vldResultEle.innerText = getOpOutcomeMsg(respJson, 'Unknown error occurred');
   }
   else {
     vldResultEle.innerText = 'Internal error occurred'; // don't want to expose too much details
@@ -132,7 +157,7 @@ function processLookupResponse(respJson, statusCode) {
     spdiEle.innerText = spdi || '(Not available)';
   }
   else if(statusCode < 500) {
-    spdiEle.innerText = getOpOutcomeMsg(respJson) || 'Unknown error occurred';
+    spdiEle.innerText = getOpOutcomeMsg(respJson, 'Unknown error occurred');
   }
   else {
     spdiEle.innerText = 'Internal error occurred'; // don't want to expose too much details
@@ -147,6 +172,7 @@ function processLookupResponse(respJson, statusCode) {
  */
 function errHandler(err) {
   var errMsg = err? (typeof err === 'string'? err: err.message): "Unknown error";
-  alert(errMsg);
+  document.getElementById("errorAlertMsg").innerText = errMsg;
+  document.getElementById("errorAlertBox").style.display = '';
   console.log(errMsg);
 }
