@@ -13,7 +13,7 @@ describe('HGVS Validator', function() {
     element(by.id('Validate')).click();
 
     // wait until the page is properly rendered
-    browser.wait(EC.visibilityOf(element(by.id('spdiResult')))).then(() => {
+    browser.wait(EC.visibilityOf(element(by.id('spdiResult'))), 5000).then(() => {
       var vldResultEle = element(by.id('validationResult'));
       var spdiEle = element(by.id('spdiResult'));
       expect(vldResultEle.getText()).toEqual('Valid');
@@ -28,10 +28,12 @@ describe('HGVS Validator', function() {
     element(by.id('hgvsInput')).sendKeys('xyz');
     element(by.id('Validate')).click();
 
-    browser.driver.sleep(3000);
-    var vldResultEle = element(by.id('validationResult'));
-    expect(vldResultEle.getText()).toEqual('Invalid');
-    done();
+    // wait until the page is properly rendered
+    browser.wait(EC.not(EC.textToBePresentInElement(element(by.id('validationResult')), 'Processing...')), 5000).then(() => {
+      var vldResultEle = element(by.id('validationResult'));
+      expect(vldResultEle.getText()).toEqual('Invalid');
+      done();
+    });
   });
 });
 
