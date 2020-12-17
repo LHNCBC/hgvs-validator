@@ -7,7 +7,7 @@
 # of it.
 NODE_DIR=node-v14.15.0
 # Set path
-PATH=/depot/packages/${NODE_DIR}/bin:/bin:/usr/local/bin:/usr/bin:/usr/sbin:/sbin:/etc
+PATH=~/${NODE_DIR}/bin:/bin:/usr/local/bin:/usr/bin:/usr/sbin:/sbin:/etc
 
 # Add node_modules/.bin to the path. We can find that from `npm bin`, but that
 # takes a second or two, and slows things down.
