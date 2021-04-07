@@ -1,7 +1,7 @@
 // Imports for webpack to find assets
 import './app.css';
 import './USAgov.gif';
-import './lhncbc.jpg';
+import './LHNCBC_white.svg';
 
 var ctssCodeSystemR4 = 'https://clinicaltables.nlm.nih.gov/fhir/R4/CodeSystem';
 var hgvsCodeSystemUrl = 'http://varnomen.hgvs.org';
