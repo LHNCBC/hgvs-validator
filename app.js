@@ -2,6 +2,7 @@
 import './app.css';
 import './USAgov.gif';
 import './LHNCBC_white.svg';
+import './lhncbc.jpg';
 
 var ctssCodeSystemR4 = 'https://clinicaltables.nlm.nih.gov/fhir/R4/CodeSystem';
 var hgvsCodeSystemUrl = 'http://varnomen.hgvs.org';
