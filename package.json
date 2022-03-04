@@ -1,6 +1,6 @@
 {
   "name": "hgvs-validator",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A web-based tool for the validation and lookup of HGVS expressions",
   "main": "app.js",
   "scripts": {
