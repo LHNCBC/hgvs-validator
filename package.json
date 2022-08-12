@@ -4,10 +4,9 @@
   "description": "A web-based tool for the validation and lookup of HGVS expressions",
   "main": "app.js",
   "scripts": {
-    "test": "webpack-dev-server & sleep 1; npm run update-webdriver && protractor test/e2e/protractor.conf.js; s=$?; kill %1; exit $s",
+    "test": "source ./bashrc.hgvs-validator && cypress run",
     "build": "webpack",
-    "start": "webpack-dev-server --open",
-    "update-webdriver": "node node_modules/protractor/bin/webdriver-manager update --versions.chrome $(google-chrome --version |awk '{print $NF}')"
+    "start": "webpack-dev-server --open"
   },
   "repository": {
     "type": "git",
@@ -27,6 +26,7 @@
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.1.0",
+    "cypress": "^10.4.0",
     "extract-loader": "^3.1.0",
     "file-loader": "^4.1.0",
     "html-loader": "^0.5.5",
@@ -35,7 +35,6 @@
     "mini-css-extract-plugin": "^0.8.0",
     "mocha": "^7.0.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
-    "protractor": "^7.0.0",
     "terser-webpack-plugin": "^1.3.0",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.6",
