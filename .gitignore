@@ -1,3 +1,6 @@
 node_modules
 public
 .idea
+test/cypress/screenshots
+test/cypress/videos
+test/cypress/downloads
