@@ -3,9 +3,14 @@
 This log documents the significant changes for each release.
 This project follows [Semantic Versioning](http://semver.org/).
 
+## [0.0.7] - 2023-03-27
+### Changed
+- Updated nodejs to v18.14.2
+- Updated npm packages to newer versions.
+
 ## [0.0.6] - 2022-12-14
 ### Changed
- - Updated website header and footer and logo.
+- Updated website header and footer and logo.
 
 ## [0.0.5] - 2022-08-24
 ### Swap out protractor with cypress for e2e tests

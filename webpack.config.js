@@ -3,8 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 /**
  *  Returns the hostname without the domain name.
  */
@@ -22,7 +21,7 @@ module.exports = {
   devtool: 'source-map',
   mode: 'production',
   optimization: {
-    minimizer: [new TerserJSPlugin({sourceMap: true}), new OptimizeCSSAssetsPlugin({})],
+    minimizer: [new TerserJSPlugin(), new CssMinimizerPlugin({})],
   },
   output: {
     filename: 'app.[contenthash].js',
@@ -51,16 +50,12 @@ module.exports = {
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
-        test: /\.(png|svg|jpg|gif)$/,
-         use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[contenthash].[ext]'
-            }
-          }
-        ]
-      },
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+        generator: {
+           filename: '[name].[contenthash].[ext]'
+        }
+    },
       {
         test: /\.m?js$/,
         use: {
@@ -80,10 +75,7 @@ module.exports = {
   },
   devServer: {
     host: '0.0.0.0',
-    //host: 'localhost',
-    port: port,
-    writeToDisk: true, // write generated asset files
-    public: shortHostname+':'+port,
-    inline: false
+    open: true,
+    port: port
   }
 }
