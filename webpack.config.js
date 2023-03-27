@@ -50,16 +50,12 @@ module.exports = {
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
-        test: /\.(png|svg|jpg|gif)$/,
-         use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[contenthash].[ext]'
-            }
-          }
-        ]
-      },
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+        generator: {
+           filename: '[name].[contenthash].[ext]'
+        }
+    },
       {
         test: /\.m?js$/,
         use: {
@@ -79,11 +75,7 @@ module.exports = {
   },
   devServer: {
     host: '0.0.0.0',
-    //host: 'localhost',
     open: true,
     port: port
-    //writeToDisk: true, // write generated asset files
-    //public: shortHostname+':'+port,
-    //inline: false
   }
 }
