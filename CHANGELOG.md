@@ -3,6 +3,10 @@
 This log documents the significant changes for each release.
 This project follows [Semantic Versioning](http://semver.org/).
 
+## [0.0.8] - 2023-03-29
+### Changed
+- Use shared navigation links from lforms-app.
+
 ## [0.0.7] - 2023-03-27
 ### Changed
 - Updated nodejs to v18.14.2

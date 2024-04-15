@@ -1,10 +1,10 @@
 {
   "name": "hgvs-validator",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A web-based tool for the validation and lookup of HGVS expressions",
   "main": "app.js",
   "scripts": {
-    "test": "source ./bashrc.hgvs-validator && cypress run",
+    "test": "cypress run",
     "build": "webpack",
     "start": "webpack serve"
   },
