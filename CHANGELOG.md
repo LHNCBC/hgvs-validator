@@ -3,6 +3,12 @@
 This log documents the significant changes for each release.
 This project follows [Semantic Versioning](http://semver.org/).
 
+## [0.0.9] - 2025-02-19
+### Changed
+- Updated NodeJS to version 22.11.0
+- Addressed the vulnerabilities reported by npm audit.
+
+
 ## [0.0.8] - 2023-03-29
 ### Changed
 - Use shared navigation links from lforms-app.
